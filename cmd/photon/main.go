@@ -1,8 +1,9 @@
 package main
 
 import (
+	"github.com/lhridder/photon"
+	"github.com/lhridder/photon/config"
 	"log"
-	"photon/config"
 )
 
 func main() {
@@ -18,6 +19,19 @@ func main() {
 		log.Println("Running in debug mode")
 	}
 
-	log.Println("Loading proxyconfigs...")
+	//TODO log.Println("Loading proxyconfigs...")
+	gw := photon.Gateway{
+		ListenTo: ":25565",
+		Proxies:  nil,
+		Cfg:      *cfg,
+	}
+
+	err = gw.Listen()
+	if err != nil {
+		log.Printf("failed to open listener: %s", err)
+		return
+	}
+
+	gw.Serve()
 
 }
